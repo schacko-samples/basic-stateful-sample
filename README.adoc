@@ -1,0 +1,54 @@
+== Basic stateful stream processor using Spring Cloud Stream and Kafka Streams
+
+This sample application demonstrates how a basic stateful Kafka Streams application can be written using Spring Cloud Stream.
+
+For more info on the details, please check out https://sobychacko.github.io/posts/kafka-streams-binder-stateful-basic/[this blog].
+
+=== Running the app:
+
+Clone this repository.
+
+Go to the root of the repository.
+
+`./mvnw clean package`
+
+Now we are ready to start the app, but before doing so make sure that you have Kafka (and Zookeeper) running on the default port.
+This repository includes a docker-compose script that you can use to start Kafka.
+
+In order to start the docker container:
+
+`docker-compose up`
+
+On a different terminal, from the root of the repoisoty
+
+`java -jar target/basic-stateful-sample-0.0.1-SNAPSHOT.jar`
+
+Assuming you are running the dockerized Kafka cluster as above.
+
+Issue the following commands:
+
+`docker exec -it stream-processing-stateful-basic /opt/kafka/bin/kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic transactions`
+
+On another terminal:
+
+`docker exec -it stream-processing-stateful-basic /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --topic failures`
+
+Enter some text in the console producer and watch the output in the console consumer.
+
+Here is some sample test data:
+
+```
+>{"status":1,"failCause":0}
+>{"status":1,"failCause":1}
+>{"status":1,"failCause":2}
+>{"status":1,"failCause":3}
+>{"status":1,"failCause":5}
+>{"status":1,"failCause":2}
+>{"status":1,"failCause":5}
+>{"status":1,"failCause":4}
+>{"status":1,"failCause":5}
+>{"status":1,"failCause":2}
+>{"status":1,"failCause":1}
+```
+
+Once you are done, stop the Kafka cluster: `docker-compose down` (from the root of the repository where the docker-compose script resides)

@@ -1,0 +1,8 @@
+spring:
+  application.name: basic-stateful-sample
+  cloud:
+    stream:
+      bindings:
+        input.destination: transactions
+        output.destination: failures
+spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 1000
